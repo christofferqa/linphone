@@ -196,7 +196,8 @@ $(X264_BUILD_DIR)/x86/libx264.a:
 	|| ( echo "Build of x264 for x86 failed." ; exit 1 )
 
 endif
-build-x264: $(BUILD_X264_DEPS)
+build-x264:
+	$(BUILD_X264_DEPS)
 
 clean-x264:
 	rm -rf $(X264_BUILD_DIR)/arm && \
@@ -239,8 +240,9 @@ copy-openh264-arm: openh264-patch openh264-install-headers
 	&& rsync -rvLpgoc --exclude ".git"  $(OPENH264_SRC_DIR)/* .
 
 build-openh264-x86: copy-openh264-x86
+	echo $(X86_SYSROOT)
 	cd $(OPENH264_BUILD_DIR_X86) && \
-	make libraries -j $(NUMCPUS) OS=android ARCH=x86 NDKROOT=$(NDK_PATH) TARGET=$(ANDROID_MOST_RECENT_TARGET)
+	make libraries -j $(NUMCPUS) OS=android ARCH=x86 NDKROOT=$(NDK_PATH) TARGET=$(ANDROID_MOST_RECENT_TARGET) SYSROOT=$(X86_SYSROOT)
 
 build-openh264-arm: copy-openh264-arm
 	cd $(OPENH264_BUILD_DIR_ARM) && \
