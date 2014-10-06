@@ -85,3 +85,6 @@
 [submodule "submodules/externals/webrtc"]
 	path = submodules/externals/webrtc
 	url = git://git.linphone.org/webrtc.git
+[submodule "tests/src/android"]
+	path = tests/src/android
+	url = git@github.com:algobardo/android.testR2E.git

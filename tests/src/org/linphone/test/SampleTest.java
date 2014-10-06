@@ -8,7 +8,7 @@ import android.content.Context;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.ListView;
 
-import com.robotium.solo.Solo;
+import android.test.Solo; // CQA: instead of Robotium
 
 /**
  * @author Sylvain Berfini
