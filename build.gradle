@@ -1,0 +1,104 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.12.+'
+        classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.10.+'
+        classpath 'com.crashlytics.examples.gradle:preprocessor:1.0.0'
+    }
+}
+
+allprojects {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+}
+
+apply plugin: 'android-sdk-manager'
+apply plugin: 'com.android.application'
+apply plugin: 'preprocessor'
+
+dependencies {
+    compile fileTree(dir: 'libs', include: '*.jar')
+    androidTestCompile 'com.jakewharton.espresso:espresso:1.1-r3'
+    androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.2.1'
+}
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion '19.1.0'
+
+    defaultConfig {
+        minSdkVersion 10
+        targetSdkVersion 19
+        applicationId 'org.linphone'
+        testApplicationId "org.linphone.test"
+        testInstrumentationRunner 'com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner'
+    }
+
+    packagingOptions {
+        exclude 'LICENSE.txt'
+    }
+
+    buildTypes {
+
+        // Enable code coverage
+
+        debug {
+            testCoverageEnabled = true
+        }
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = [
+                'src',
+                'submodules/linphone/java/common',
+                'submodules/linphone/java/impl',
+                'submodules/linphone/java/j2se',
+                'submodules/linphone/mediastreamer2/java/src',
+                'submodules/linphone/coreapi/help/java',
+                'submodules/externals/axmlrpc/src/main/java']
+            resources.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+
+            jni.srcDirs = []
+        }
+
+        androidTest {
+            java.srcDirs = ['tests/src']
+            resources.srcDirs = ['tests/src']
+            aidl.srcDirs = ['tests/src']
+            renderscript.srcDirs = ['tests/src']
+            res.srcDirs = ['tests/res']
+            assets.srcDirs = ['tests/assets']
+        }
+    }
+}
+
+/*********************/
+/*** CODE COVERAGE ***/
+/*********************/
+
+allprojects {
+    
+    // Avoid VerifyError
+    
+    tasks.withType(JavaCompile) {
+        sourceCompatibility = 1.5
+        targetCompatibility = 1.5
+    }
+}
+
+task jacoco(dependsOn: "createDebugCoverageReport") {
+    group = "Reporting"
+
+    description = "Generate Jacoco coverage reports"
+}
