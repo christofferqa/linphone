@@ -30,3 +30,4 @@ submodules/externals/build/openh264/arm
 submodules/externals/build/openh264/x86
 .gradle/
 build/
+app-data-dynamic.json
